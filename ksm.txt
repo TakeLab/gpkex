@@ -1,0 +1,1 @@
+("Plus (Inv (Times Tf Tf)) (Plus (Div Tfidf (Inv (Inv (Inv (Plus Length First))))) (Div Rare (Log (Log Length))))",3.4555446105135745)

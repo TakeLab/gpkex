@@ -1,0 +1,100 @@
+====================================================================================================
+======================= GPKEX - Genetically programmed keyphrase extraction ========================
+====================================================================================================
+
+
+This repository contains all the programs needed for development of keyphrase extraction system.
+However, some of the resources are not publicly available.
+
+The GPKEX system consists of following elements:
+
+	- Phrase frequency list extraction program (getPhrFreq.hs)
+	- Annotated keyphrases extraction program (getAnnotated.hs)
+	- Keyphrase candidates extraction program (getCandidates.hs)
+	- Genetic evolution of keyphrase scoring measures (KSM) program (runGP.hs)
+	- Evaluation of KSMs program (evaluation.hs)
+	- Keyphrase extraction program (kex.hs)
+	- Example KSM (ksm.txt)
+
+(which are available)
+
+	- Phrase frequency list
+	- Semi-automatically acquired morphological lexicon
+	- Document training set
+	- Document test set
+	- Stop words list
+
+(which are not available)
+
+====================================================================================================
+
+All of the programs are written in Haskell programming language. They have been tested and used on a
+Linux operating system, using GHC compiler (version 6.12.3). Apart from the standard modules, some
+other are also needed: GenProg and Data.List.Split (both available at http://hackage.haskell.org ).
+
+====================================================================================================
+
+Usage
+=====
+
+None of the programs work "right out of the box". Additional information, such as the paths of
+directories containing document set are needed. Since some of the programs are often executed,
+getting those information as command line arguments is not convenient. Those informations are
+instead hardcoded into program code, always at the beginning of the program code, right after the
+import statements.
+
+
+
+getPhrFreq.hs needs the information of the directory containing the document set, stopword list
+path, and morphological lexicon path. After compilation, it does not need any user input. This
+program produces file named "phraseFreq.txt" in the same directory (and overwrites a file if it
+already exists).
+
+getAnnotated.hs needs the information of the directory containing the annotated document set, the
+directory in which annotated keyphrases should be extracted, stopword list path, and morphological
+lexicon path. After compilation, it does not need any user input. This program produces a file in
+output directory for every input document.
+
+getCandidates.txt needs the information of the directory containing the training document set, the
+directory in which keyphrase candidates should be extracted, stopword list path, and morphological
+lexicon path. After compilation, it does not need any user input. This program produces a file in
+output directory for every input document. Note that the file "phraseFreq.txt" needs to be in the
+same directory as the compiled program.
+
+runGP.hs needs the information of the directory containing extracted candidates of test set
+documents, the directory containing annotated keyphrases, and the output directory for evolved
+KSMs. After compilation, it does not need any user input. This program produces a file in output
+directory and takes care for not overwriting previously evolved KSMs as long as their number is
+under 1000. The evolution parameters and fitness functions can be changed as is noted in code
+comments. It is not recommended to run this program from interpreter as the execution time can be
+severly prolonged. It is recommended to use compilation optimisation.
+
+evaluation.hs needs the information of the directory containing KSMs, the directory containing
+document test set, stopword list path, and morphological lexicon path. The program writes the
+set of evaluation values for every KSM file and their mean for all KSMs. Note that the file
+"phraseFreq.txt" needs to be in the same directory as the compiled program.
+
+kex.hs needs the peths of the stopword list and morphological lexicon paths. It also requires two
+command line arguments. First is the path to the file containing KSE (:: (E, Float)) and the second
+containing the document. The document should be structured such that the first line contains the
+title, while the second line contains the document text. Extracted keywords are written on standard
+output. Note that the file "phraseFreq.txt" needs to be in the same directory as the compiled
+program.
+
+
+
+
+Morphological lexicon is structured such that every line contains new word-form, followed by the
+lemma and the POS tag. In case of multiple lemmas, they are all listed in the same line.
+For example, the word-form "meeting" should be listed as "meeting meet V meeting N".
+
+Stopwords list is used only to account for possible errors in our POS tagging. If a POS tagger can
+successfully detect stopwords, this list can be empty. The file should contain stopwords of a
+language, each in its own row.
+
+Documents from both training and test document set should be .xml files, containing the title
+within tags "<title>" and "</title>" and the document text within tags "<body>" and "</body>".
+Annotated keyphrases of a training set should be within tags "<slugline>" and "</slugline>",
+separated by '|' character.
+Annotated keyphrases of each annotator (in the test set) should be within "<keywords>" and
+"<keywords>", each keyphrase within its own "<keyword>" and "</keyword>" tags.
