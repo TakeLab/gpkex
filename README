@@ -55,7 +55,7 @@ directory in which annotated keyphrases should be extracted, stopword list path,
 lexicon path. After compilation, it does not need any user input. This program produces a file in
 output directory for every input document.
 
-getCandidates.txt needs the information of the directory containing the training document set, the
+getCandidates.hs needs the information of the directory containing the training document set, the
 directory in which keyphrase candidates should be extracted, stopword list path, and morphological
 lexicon path. After compilation, it does not need any user input. This program produces a file in
 output directory for every input document. Note that the file "phraseFreq.txt" needs to be in the
