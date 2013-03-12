@@ -25,6 +25,28 @@ takeNumber = 300 :: Int
 takeSample = 60 :: Int
 
 --------------------------
+--GAP
+--------------------------
+
+sortByOcc2 :: [[[String]]] -> [(Int,[String])]
+sortByOcc2 xs = reverse $ sort $ nub $ map (\x -> nOfOcc x) xs'
+  where nOfOcc x = (length $ filter (\x' -> x' == x) xs',x)
+        xs'      = map stem $ concat xs
+
+gap :: [[String]] -> [(Int,[String])] -> Float
+gap myRes realRes = 1 / lowerSum * sum1
+  where lowerSum = avgY (map fst realRes) (length realRes)
+        avgY ys 1 = fromIntegral $ head ys
+        avgY ys i = (fromIntegral $ sum $ take i ys) / (fromIntegral i) + avgY ys (i-1)
+        myR = map evaluate myRes
+        evaluate s = fromIntegral $ sum $ map fst $ filter (\(num, str) -> str == s) realRes
+        sum3 k = sum $ take k myR
+        myR' = zip [1..] myR
+        sum2 (i,x) | x == 0 = 0
+                   | otherwise = 1 / (fromIntegral i) * (fromIntegral $ sum3 i)
+        sum1 = sum $ map sum2 myR'
+
+--------------------------
 --KENDAL TAU
 --------------------------
 sortByOcc :: [[[String]]] -> [(Int,[String])]
@@ -336,19 +358,20 @@ filterFiles fs = sort $ filter (\f -> isSuffixOf ".xml" f) fs
 filterFiles' [] = error "empty folder"
 filterFiles' fs = sort $ filter (\f -> isSuffixOf ".txt" f) fs
 
-sumUp xs = (sfoo prv, sfoo dru, sfoo tre, sfoo cet, sfoo pet, sfoo ses, sfoo sed, sfoo osm, sfoo dev, sfoo des, sfoo jed, sfoo dva)
-  where prv = map (\(x,_,_,_,_,_,_,_,_,_,_,_) -> x) xs
-        dru = map (\(_,x,_,_,_,_,_,_,_,_,_,_) -> x) xs
-        tre = map (\(_,_,x,_,_,_,_,_,_,_,_,_) -> x) xs
-        cet = map (\(_,_,_,x,_,_,_,_,_,_,_,_) -> x) xs
-        pet = map (\(_,_,_,_,x,_,_,_,_,_,_,_) -> x) xs
-        ses = map (\(_,_,_,_,_,x,_,_,_,_,_,_) -> x) xs
-        sed = map (\(_,_,_,_,_,_,x,_,_,_,_,_) -> x) xs
-        osm = map (\(_,_,_,_,_,_,_,x,_,_,_,_) -> x) xs
-        dev = map (\(_,_,_,_,_,_,_,_,x,_,_,_) -> x) xs
-        des = map (\(_,_,_,_,_,_,_,_,_,x,_,_) -> x) xs
-        jed = map (\(_,_,_,_,_,_,_,_,_,_,x,_) -> x) xs
-        dva = map (\(_,_,_,_,_,_,_,_,_,_,_,x) -> x) xs
+sumUp xs = (sfoo prv, sfoo dru, sfoo tre, sfoo cet, sfoo pet, sfoo ses, sfoo sed, sfoo osm, sfoo dev, sfoo des, sfoo jed, sfoo dva, tri)
+  where prv = map (\(x,_,_,_,_,_,_,_,_,_,_,_,_) -> x) xs
+        dru = map (\(_,x,_,_,_,_,_,_,_,_,_,_,_) -> x) xs
+        tre = map (\(_,_,x,_,_,_,_,_,_,_,_,_,_) -> x) xs
+        cet = map (\(_,_,_,x,_,_,_,_,_,_,_,_,_) -> x) xs
+        pet = map (\(_,_,_,_,x,_,_,_,_,_,_,_,_) -> x) xs
+        ses = map (\(_,_,_,_,_,x,_,_,_,_,_,_,_) -> x) xs
+        sed = map (\(_,_,_,_,_,_,x,_,_,_,_,_,_) -> x) xs
+        osm = map (\(_,_,_,_,_,_,_,x,_,_,_,_,_) -> x) xs
+        dev = map (\(_,_,_,_,_,_,_,_,x,_,_,_,_) -> x) xs
+        des = map (\(_,_,_,_,_,_,_,_,_,x,_,_,_) -> x) xs
+        jed = map (\(_,_,_,_,_,_,_,_,_,_,x,_,_) -> x) xs
+        dva = map (\(_,_,_,_,_,_,_,_,_,_,_,x,_) -> x) xs
+        tri = map (\(_,_,_,_,_,_,_,_,_,_,_,_,x) -> x) xs
         sfoo ys = (sum $ filter (\y -> not (isNaN y)) ys) / (fromIntegral $ length $ filter (\y -> not (isNaN y)) ys)
 
 ---------------------------------------------------------------------
@@ -403,6 +426,8 @@ processFiles stopW lem tree pfq fn = do
   let benRes = benevolent $ getKeywords text
   let benF1 = benevolentF1 benRes mRes'
   let benF2 = benevolentF2 benRes mRes'
+  let gapList = sortByOcc2 $ getKeywords text
+  let gapRes = gap mRes gapList
   let nOfW  = 10 * (precAtI 10 (nub $ concat $ getKeywords text) (map snd mRes'))
-  let ispis = (kenTau,weakMAP,strongMAP,weakMRR,strongMRR,pAt10W,pAt10S,rPrecW,rPrecS,benF1,benF2,nOfW)
+  let ispis = (kenTau,weakMAP,strongMAP,weakMRR,strongMRR,pAt10W,pAt10S,rPrecW,rPrecS,benF1,benF2,nOfW,gapRes)
   return ispis
