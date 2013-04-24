@@ -15,6 +15,7 @@ import System.Environment
 
 stopWordFile = ""--HAS TO BE ADDED BEFORE COMPILING AND EXECUTING; example: "stopwords.txt"
 morphLexicon = ""--HAS TO BE ADDED BEFORE COMPILING AND EXECUTING; example: "morphLexicon.txt"
+candidateFrequency = ""--HAS TO BE ADDED BEFORE COMPILING AND EXECUTING; example: "phraseFreq.txt"
 
 --------------------------
 --GENPROG
@@ -232,7 +233,7 @@ main = do
   let fn = head $ tail args
   sws <- readFile stopWordFile
   pos <- readFile morphLexicon
-  s' <- readFile "phraseFreq.txt"
+  s' <- readFile candidateFrequency
   tree' <- readFile tr
   let lem = foldl (\m a' -> (getDict a' m)) M.empty $ lines pos
   let stopW = S.fromList $ lines sws
