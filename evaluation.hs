@@ -17,6 +17,7 @@ inDirT = ""--HAS TO BE ADDED BEFORE COMPILING AND EXECUTING; example: "/home/use
 inDirP = ""--HAS TO BE ADDED BEFORE COMPILING AND EXECUTING; example: "/home/user/Documents/document_test_set/"
 stopWordFile = ""--HAS TO BE ADDED BEFORE COMPILING AND EXECUTING; example: "stopwords.txt"
 morphLexicon = ""--HAS TO BE ADDED BEFORE COMPILING AND EXECUTING; example: "morphLexicon.txt"
+candidateFrequency = ""--HAS TO BE ADDED BEFORE COMPILING AND EXECUTING; example: "phraseFreq.txt"
 
 
 stemN = 5 :: Int
@@ -389,7 +390,7 @@ main' fn1 = do
   pos <- readFile morphLexicon
   let lem = foldl (\m a' -> (getDict a' m)) M.empty $ lines pos
   let stopW = S.fromList $ lines sws
-  s' <- readFile "phraseFreq.txt"
+  s' <- readFile candidateFrequency
   tree' <- readFile (inDirT ++ fn1)
   let tree'' = read $ tree' :: (String,Float)
   let tree = read $ fst $ tree'' :: E
