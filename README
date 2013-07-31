@@ -2,6 +2,12 @@
 ======================= GPKEX - Genetically programmed keyphrase extraction ========================
 ====================================================================================================
 
+           Text Analysis and Knowledge Engineering Lab, University of Zagreb, Croatia
+                          Copyright (c) 2013, Marko Bekavac, Jan Snajder
+
+
+
+
 
 This repository contains all the programs needed for development of keyphrase extraction system.
 However, some of the resources are not publicly available.
@@ -15,16 +21,36 @@ The GPKEX system consists of following elements:
 	- Evaluation of KSMs program (evaluation.hs)
 	- Keyphrase extraction program (kex.hs)
 	- Example KSM (ksm.txt)
+	- Document test set (available at http://takelab.fer.hr/data/kexhr/)
 
 (which are available)
 
 	- Phrase frequency list
 	- Semi-automatically acquired morphological lexicon
 	- Document training set
-	- Document test set
 	- Stop words list
 
 (which are not available)
+
+====================================================================================================
+
+For details, please refer to the paper:
+
+Marko Bekavac and Jan Šnajder (2013). GPKEX: Genetically Programmed Keyphrase Extraction from
+Croatian Texts. Proceedings of the 4th Biennial International Workshop on Balto-Slavic Natural
+Language Processing (BNLP 2013), Sofia, ACL, 2013.
+
+                                http://takelab.fer.hr/data/gpkex/
+
+If you use GPKEX or the associated datasets, please cite the paper. The BibTeX citation is:
+
+@InProceedings{bekavac2013gpkex,
+  title={GPKEX: Genetically Programmed Keyphrase Extraction from Croatian Texts},
+  author={Bekavac, Marko and {\v S}najder, Jan},
+  booktitle={4th Biennial International Workshop on Balto-Slavic Natural Language Processing},
+  year={2013},
+  pages={in press}
+ }
 
 ====================================================================================================
 
@@ -33,6 +59,7 @@ Linux operating system, using GHC compiler (version 6.12.3). Apart from the stan
 other are also needed: GenProg and Data.List.Split (both available at http://hackage.haskell.org ).
 
 ====================================================================================================
+
 
 Usage
 =====
@@ -98,3 +125,4 @@ Annotated keyphrases of a training set should be within tags "<slugline>" and "<
 separated by '|' character.
 Annotated keyphrases of each annotator (in the test set) should be within "<keywords>" and
 "<keywords>", each keyphrase within its own "<keyword>" and "</keyword>" tags.
+
