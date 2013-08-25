@@ -125,4 +125,3 @@ Annotated keyphrases of a training set should be within tags "<slugline>" and "<
 separated by '|' character.
 Annotated keyphrases of each annotator (in the test set) should be within "<keywords>" and
 "<keywords>", each keyphrase within its own "<keyword>" and "</keyword>" tags.
-
